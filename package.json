@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server",
     "dev": "nodemon server",
-    "server": "nodemon server",
+    "server": "nodemon --delay 500ms server",
     "client": "npm start --prefix client",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
