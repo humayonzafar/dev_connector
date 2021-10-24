@@ -42,3 +42,6 @@ web_modules/
 
 # phpstorm
 .idea
+
+# env
+/config/default.json
