@@ -1,17 +1,24 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const httpsStatusCodes = require('./constants/httpStatusCodes');
 
 const app = express();
-
 //connect database
 connectDB();
 
 //init middleware
-app.use(express.json({extended:false}));
+app.use(express.json());                               //body json parsing
+app.use(express.urlencoded({extended:false})); //for form post requests
 
 app.get('/',(req,res)=>{
     res.send('API Running...');
 })
+
+//set global variable
+app.use(function (req,res,next){
+    res.locals.httpsStatusCodes = httpsStatusCodes;
+    next();
+});
 
 //define routes
 app.use('/api/auth', require('./routes/api/auth'));
