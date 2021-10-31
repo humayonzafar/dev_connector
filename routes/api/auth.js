@@ -17,11 +17,11 @@ router.get('/', auth, async (req, res) => {
         res.json(user);
     } catch (err) {
         console.log(err);
-        res.status(res.locals.httpsStatusCodes.INTERNAL_SERVER).send('Server Error');
+        res.status(500).send('Server Error');
     }
 });
 
-//  @route       POST post/auth
+//  @route       POST post/auth/
 //  @desc        Authenticate user and get jwt token
 //  @access      Public
 router.post('/',  [
@@ -30,15 +30,19 @@ router.post('/',  [
 ], async (req, res) => {
 
     try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({errors: errors.array()});
+        }
         const {email,password} = req.body;
         const user = await User.findOne({email});
         if(!user){
-            return res.status(res.locals.httpsStatusCodes.BAD_REQUEST).json({errors: [{'msg': "Invalid Credentials"}]});
+            return res.status(400).json({errors: [{'msg': "Invalid Credentials"}]});
         }
 
-        const isMath = await bcrypt.compare(password,user.password);
-        if(!isMath){
-            return res.status(res.locals.httpsStatusCodes.BAD_REQUEST).json({errors: [{'msg': "Invalid Credentials"}]});
+        const isMatch = await bcrypt.compare(password,user.password);
+        if(!isMatch){
+            return res.status(400).json({errors: [{'msg': "Invalid Credentials"}]});
         }
 
         const payload = {
@@ -56,8 +60,8 @@ router.post('/',  [
                 res.json({token});
             });
     } catch (err) {
-        console.log(err);
-        res.status(res.locals.httpsStatusCodes.INTERNAL_SERVER).send('Server Error');
+        console.log(err, 'error in auth');
+        res.status(500).send('Server Error');
     }
 });
 

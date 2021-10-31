@@ -7,7 +7,7 @@ const config = require('config');
 const {check, validationResult} = require('express-validator/check');
 const User = require('../../models/User');
 
-//  @route       POST api/users
+//  @route       POST api/users/create
 //  @desc        Register User
 //  @access      Public
 router.post('/', [
@@ -18,14 +18,14 @@ router.post('/', [
     async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(res.locals.httpsStatusCodes.BAD_REQUEST).json({errors: errors.array()});
+            return res.status(400).json({errors: errors.array()});
         }
         const {name, email, password} = req.body;
 
         try {
              const userExists = await User.findOne({email});
              if(userExists){
-                 return res.status(res.locals.httpsStatusCodes.BAD_REQUEST).json({errors: [{'msg': "User Already Exists"}]});
+                 return res.status(400).json({errors: [{'msg': "User Already Exists"}]});
              }
 
             //get users gravatar
@@ -65,7 +65,7 @@ router.post('/', [
                 });
         } catch (err) {
           console.log(err, 'err');
-          res.status(res.locals.httpsStatusCodes.INTERNAL_SERVER).send();
+          res.status(500).send('Server Error');
         }
     }
 );
