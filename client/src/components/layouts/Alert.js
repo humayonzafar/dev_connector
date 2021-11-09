@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from "react-redux";
-import {setAlert} from "../../actions/alert";
 import PropTypes from "prop-types";
 
 const Alert = ({alerts}) =>
