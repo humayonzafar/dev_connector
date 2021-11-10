@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://humayonzafar:SWxpKXj0EfDsd7yK@cluster0.zcyiu.mongodb.net/devconnector?retryWrites=true&w=majority",
+  "jwtSecret": "secretTokenForJwt",
+  "gitClient": "a1ef06370a52ea56e25e",
+  "gitSecret": "80a2762fb0ac26ee58b2226fbedd0bdf2a2d9e89"
+}
